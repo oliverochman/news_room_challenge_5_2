@@ -234,7 +234,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
-  cucumber-rails (~> 1.4, >= 1.4.5)
+  cucumber-rails
   database_cleaner
   factory_bot_rails
   listen (>= 3.0.5, < 3.2)
