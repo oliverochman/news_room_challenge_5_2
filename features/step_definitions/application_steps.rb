@@ -2,10 +2,6 @@ Given(/^I am on the create article page$/) do
   visit new_article_path
 end
 
-Then(/^I should see "([^"]*)"$/) do |content|
-  expect(page).to have_content content
-end
-
 And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   sleep 1
   fill_in field, with: value

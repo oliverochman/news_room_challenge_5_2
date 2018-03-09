@@ -54,7 +54,7 @@ module NewsRoom
 end
 ```
 
-Open spec/rails_helper.rb and add the following block at the end of the file.
+Open `spec/rails_helper.rb` and add the following block at the end of the file to configure ShouldaMatchers.
 
 ```
 Shoulda::Matchers.configure do |config|
@@ -65,12 +65,21 @@ Shoulda::Matchers.configure do |config|
 end
 ```
 
+I also like to include FactoryBot methods in my RSpec config to be able to use shorter syntax in my specs:
+
+```ruby
+RSpec.configure do |config|
+  # other settings 
+  config.include FactoryBot::Syntax::Methods
+end
+```
+
 Add Acceptance test framework
 
 ```
 group :development, :test do
   # Add Cucumber and Database Cleaner
-  gem 'cucumber-rails', '~> 1.4', '>= 1.4.5', require: false
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
 end
 ```
@@ -116,7 +125,32 @@ $ rails g model article title:string body:text
       create        spec/factories/articles.rb
 ```
 
-Let's start with adding an image to the Article model 
+These basic specs can tell us if the Article model is doing what we want it to do:
+
+```ruby
+
+RSpec.describe Article, type: :model do
+  describe 'Factory' do
+    it 'is valid' do
+      expect(create(:article)).to be_valid
+    end
+  end
+
+  describe 'DB Table' do
+    it {is_expected.to have_db_column(:title).of_type(:string)}
+    it {is_expected.to have_db_column(:body).of_type(:text)}
+  end
+
+  describe 'Attachment' do
+    it 'is valid  ' do
+      subject.image.attach(io: File.open(fixture_path + '/dummy_image.jpg'), filename: 'attachment.jpg', content_type: 'image/jpg')
+      expect(subject.image).to be_attached
+    end
+  end
+end
+```
+
+In order to have these specs go green, let's start with adding an image to the Article model 
 
 ```
 class Article < ApplicationRecord
@@ -161,3 +195,97 @@ $ rails routes
 update_rails_disk_service PUT  /rails/active_storage/disk/:encoded_token(.:format)                               active_storage/disk#update
      rails_direct_uploads POST /rails/active_storage/direct_uploads(.:format)                                    active_storage/direct_uploads#create
 ```
+
+Firing up the server (`rails s`) and going through the process of creating an article worked, so I set off to write an acceptance test. I ended up with this simple scenario:
+
+```gherkin
+Feature: User can create article with image attachment
+  As an Author
+  In order be able to add content to the news service
+  I would like to be able to publish articles with an image
+
+
+  Scenario: Auth creates an article
+    Given I am on the create article page
+    And I fill in "Title" with "Awesome news"
+    And I fill in "Content" with "Lorem ipsum"
+    And I attach a file
+    And I click "Create Article"
+    Then I should be on the article page for "Awesome news"
+
+```
+
+And my step definitions:
+
+```ruby
+Given(/^I am on the create article page$/) do
+  visit new_article_path
+end
+
+And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
+  sleep 1
+  fill_in field, with: value
+end
+
+
+And(/^I attach a file$/) do
+  attach_file('article_image', "#{::Rails.root}/spec/fixtures/dummy_image.jpg")
+end
+
+And(/^I click "([^"]*)"$/) do |value|
+  click_link_or_button value
+end
+
+Then(/^I should be on the article page for "([^"]*)"$/) do |article_title|
+  article = Article.find_by(title: article_title)
+  expect(current_path).to eq article_path(article)
+end
+```
+
+Our `new.html.haml` looks like this:
+
+```haml
+= form_with model: @article, local: true do  |form|
+  = form.label :title
+  = form.text_field :title
+  = form.file_field :image
+  = form.label :body, 'Content'
+  = form.text_area :body
+  = form.s
+```
+
+And the `show` page, that the create action will redirect to, looks like this:
+
+```haml
+%h1= @article.title
+%p= @article.body
+= image_tag @article.image
+```
+
+So, time to look at the controller action. Pretty straight forward and simple:
+
+```ruby
+class ArticlesController < ApplicationController
+  def new
+    @article = Article.new
+  end
+
+  def show
+    @article = Article.find(params[:id])
+  end
+
+  def create
+    article = Article.create(article_params)
+    article.image.attach(params[:article][:image])
+    redirect_to article
+  end
+
+  private
+
+  def article_params
+    params.require(:article).permit(:title, :body)
+  end
+end
+```
+
+And now, it all works. Gotta love Rails!
