@@ -7,7 +7,7 @@ Using Rails 5.2 with Active Storage
 $ rvm gemset create rails_5_2
 $ rvm gemset use rails_5_2
 $ gem install rails --pre
-$ rails new news_room --database:postgresql --skip-test --skip-bundle
+$ rails new news_room --database=postgresql --skip-test --skip-bundle
 $ cd news_room
 ```
 
