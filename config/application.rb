@@ -29,5 +29,6 @@ module NewsRoom
       generate.controller_specs false
       generate.system_tests false
     end
+
   end
 end

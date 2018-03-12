@@ -29,3 +29,5 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 Capybara.default_driver = :selenium
 
+World (FactoryBot::Syntax::Methods)
+
