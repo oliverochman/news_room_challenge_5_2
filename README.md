@@ -2,6 +2,7 @@
 Using Rails 5.2 with Active Storage
 
 ## New app using Rails 5.2.0 (RC1)
+This guide will provide a step-by-step instruction to scaffold a new Rails 5.2 application. At the time of writing this, Rails 5.2 is in Release Candidate 1, so we will use `rails new` command with the `--pre` flag.  We will be using a separate gemset to contain the dependencies used in this project. You should familiarize yourself with the concept of gemsets by reading more about them on the [RVM documentation](https://rvm.io/gemsets/basics) site. 
 
 ```
 $ rvm gemset create rails_5_2
@@ -10,20 +11,35 @@ $ gem install rails --pre
 $ rails new news_room --database=postgresql --skip-test --skip-bundle
 $ cd news_room
 ```
+* The --database=postgresql selects PostgreSQL as the database (The out-of-the-box setting is MySQL)
+* The --skip-test option skips configuring for the default testing tool.
+* The --skip-bundle option prevents the generator from running bundle install automatically.
+
+Make sure to `cd` into the new project folder that the `rails new` command created for us. 
 
 ```
 $ touch .ruby-gemset
 ```
-Set gemset to use. This will automatically switch to the right gemset when you cd into the project folder.
+Inside that file, we'll set the name of the gemset we want to use. This will automatically switch to the right gemset when you cd into the project folder.
+
 ```
 rails_5_2
 ```
 
-### HAML?
-Ifo you want to use HAML as templating (as I will do) add `haml-rails` to your `Gemfile`. 
+### HAML
+In order to use Haml in your view templates, add `haml-rails` to your `Gemfile`. 
 
 
 ### Frameworks and tools
+
+Add rspec-rails gem to the development and test groups of your Gemfile.
+
+The RSpec extension library `shoulda-matchers` allows us to test common Rails functionality, like validations and associations, with less code.
+
+The gem `factory_bot_rails` is a library for setting up Ruby objects as test data. It's essentially a fixtures replacement. It allows you to create objects that are needed in tests without providing a value for each required attribute. If you don't provide a value for a required attribute `factory_bot` will use the default value that you defined in factory's definition.
+
+[Pry](https://github.com/pry/pry) is a powerful alternative to the standard IRB shell for Ruby. [`pry-rails`](https://github.com/rweng/pry-rails) causes Rails console to open pry. [`pry-byebug`](https://github.com/deivid-rodriguez/pry-byebug) adds step-by-step debugging and stack navigation capabilities to pry. 
+
 
 ```ruby
 group :development, :test do
