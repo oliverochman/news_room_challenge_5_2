@@ -25,7 +25,7 @@ Ifo you want to use HAML as templating (as I will do) add `haml-rails` to your `
 
 ### Frameworks and tools
 
-```
+```ruby
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'pry-byebug'
@@ -37,7 +37,7 @@ end
 
 ### Configuration
 
-```
+```ruby
 module NewsRoom
   class Application < Rails::Application
     config.load_defaults 5.2
@@ -56,7 +56,7 @@ end
 
 Open `spec/rails_helper.rb` and add the following block at the end of the file to configure ShouldaMatchers.
 
-```
+```ruby
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -76,7 +76,7 @@ end
 
 Add Acceptance test framework
 
-```
+```ruby
 group :development, :test do
   # Add Cucumber and Database Cleaner
   gem 'cucumber-rails', require: false
@@ -85,18 +85,18 @@ end
 ```
 
 Configure testing frameworks with default settings
-```
+```bash
 $ bundle exec rails generate cucumber:install
 $ bundle exec rails generate rspec:install
 ```
 
-```
+```bash
 $ rails db:create db:migrate
 ```
 
 Run your tests to check if all setup is working:
 
-```
+```bash
 $ rake
 ```
 If all is good, commit and push.
@@ -108,12 +108,12 @@ Active Storage comes with some custom migrations (investigate why)
 
 Copy the migrations to your `db/migrations` folder:
 
-```
+```bash
 $ rails active_storage:install:migrations
 ```
 
 ### Create `Article` model
-```
+```bash
 $ rails g model article title:string body:text
 
       invoke  active_record
@@ -152,7 +152,7 @@ end
 
 In order to have these specs go green, let's start with adding an image to the Article model 
 
-```
+```ruby
 class Article < ApplicationRecord
   has_one_attached :image
 end
@@ -160,7 +160,7 @@ end
 We don't have to create an `Image`  model. Active Storage uses the Blob and Attachment under the hood to give us `article.image`.
 
 ### ArticlesController
-```
+```bash
 $  rails g controller Articles new show
 create  app/controllers/articles_controller.rb
        route  get 'articles/new'
@@ -174,7 +174,7 @@ get 'articles/show'
 
 I always modify my routes to use the `resources` keyword:
 
-```
+```ruby
 Rails.application.routes.draw do
   resources :articles, only: [:new, :create, :show]
 end
@@ -182,7 +182,7 @@ end
 
 ### Routes
 With this setup, our routes table looks something like this:
-```
+```bash
 $ rails routes
                    Prefix Verb URI Pattern                                                                       Controller#Action
                  articles POST /articles(.:format)                                                               articles#create
