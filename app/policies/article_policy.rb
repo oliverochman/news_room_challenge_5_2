@@ -5,6 +5,10 @@ class ArticlePolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    true
+  end
+
   def new?
     @user.author?
   end

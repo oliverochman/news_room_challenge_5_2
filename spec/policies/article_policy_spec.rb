@@ -1,28 +1,18 @@
-require 'rails_helper'
+describe ArticlePolicy do
+  subject { described_class.new(user, article) }
 
-RSpec.describe ArticlePolicy do
+  let(:article) { create(:article) }
 
-  let(:user) { User.new }
+  context 'user is a visitor' do
+    let(:user) { create(:user, role: 'visitor') }
 
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { is_expected.to permit_actions [:show, :index] }
+    it { is_expected.to forbid_new_and_create_actions }
   end
 
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+  context 'user is an author' do
+    let(:user) { create(:user, role: 'author') }
 
-  permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { is_expected.to permit_new_and_create_actions }
   end
 end

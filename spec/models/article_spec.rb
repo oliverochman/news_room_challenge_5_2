@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Article, type: :model do
   describe 'Factory' do
     it 'is valid' do

@@ -25,6 +25,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'pundit-matchers'
 end
 
 group :development do
