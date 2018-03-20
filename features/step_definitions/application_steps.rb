@@ -1,4 +1,4 @@
-Given(/^I am on the create article page$/) do
+Given(/^I (?:am on|try to visit) the create article page$/) do
   visit new_article_path
 end
 
@@ -14,4 +14,15 @@ end
 
 And(/^I click "([^"]*)"$/) do |value|
   click_link_or_button value
+end
+
+Given(/^the following users exist:$/) do |table|
+  table.hashes.each do |user_hash|
+    create(:user, user_hash)
+  end
+end
+
+Given(/^I am logged in as "([^"]*)"$/) do |email|
+  user = User.find_by(email: email)
+  login_as(user, scope: :user)
 end
