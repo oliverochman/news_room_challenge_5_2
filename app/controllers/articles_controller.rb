@@ -1,11 +1,12 @@
 class ArticlesController < ApplicationController
-  before_action :authorize_user_as_author, only: [:new]
+
   def index
     @articles = Article.all
   end
 
   def new
     @article = Article.new
+    authorize @article
   end
 
   def show
