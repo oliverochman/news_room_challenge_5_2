@@ -6,6 +6,10 @@ class ArticlePolicy < ApplicationPolicy
   end
 
   def new?
-    @user.role == 'author'
+    @user.author?
+  end
+
+  def create?
+    new?
   end
 end
