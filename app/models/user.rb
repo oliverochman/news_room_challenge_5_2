@@ -1,18 +1,19 @@
 class User < ApplicationRecord
-  reverse_geocoded_by :latitude, :longitude
   after_validation :reverse_geocode  # auto-fetch address
+  after_initialize :set_default_role, if: :new_record?
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  reverse_geocoded_by :latitude, :longitude
+  enum role: [:visitor, :author]
+
+  #validates_inclusion_of :role, inclusion: { in: role.keys }
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  def author?
-    self.role == 'author'
-  end
+  private
 
-  def visitor?
-    self.role == 'visitor'
+  def set_default_role
+    self.role ||= :visitor
   end
 end

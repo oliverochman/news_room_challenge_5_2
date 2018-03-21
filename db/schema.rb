@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2018_03_20_183749) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "role", default: "visitor"
+    t.integer "role"
     t.float "latitude"
     t.float "longitude"
     t.text "address"
