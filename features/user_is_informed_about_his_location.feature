@@ -3,7 +3,13 @@ Feature: User is informed about his location
   In order to get localized news
   I would like the application to know where I am
 
-  Scenario: User is in Goteborg
+  Scenario: User is in Stockholm
     Given I am at latitude: "59.334591", longitude: "18.063240"
     And I visit the site
-    Then I should see "West Coast Edition"
+    Then I should see "Stockholm Edition"
+
+
+  Scenario: User is in Gothenburg
+    Given I am at latitude: "57.1", longitude: "11.9"
+    And I visit the site
+    Then I should see "Rest of Sweden Edition"

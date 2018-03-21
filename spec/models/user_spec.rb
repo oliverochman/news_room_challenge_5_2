@@ -10,10 +10,6 @@ RSpec.describe User, type: :model do
     it {is_expected.to have_db_column :role}
   end
 
-  describe 'Validations' do
-    it {is_expected.to validate_inclusion_of(:role).in_array(User.role.keys)}
-  end
-
   describe 'Roles' do
     let(:author) {create(:user, role: 'author')}
     let(:random_visitor) {create(:user, role: 'visitor')}

@@ -16,38 +16,26 @@
 //= require_tree .
 
 
-//= require rails-ujs
-//= require turbolinks
-//= require jquery3
-//= require popper
-//= require bootstrap-sprockets
-//= require gmaps
-//= require_tree .
-
-
 document.addEventListener("turbolinks:load", function () {
     setUpObserver();
 
-    if (document.body.contains(document.getElementById('map'))) {
-        getPosition({
-            enableHighAccuracy: true
-        }).then(function (position) {
-            var c = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
-            };
-            setCookie('geocoderLocation', JSON.stringify(c))
-                .then(function () {
-                    redirectWithLocation();
-                    document.body.dataset.geocoded = true;
-                }).catch(function (error) {
-                console.log(error);
-            });
-        }).catch(function (error) {
+    getPosition({
+        enableHighAccuracy: true
+    }).then(function (position) {
+        var c = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        };
+        setCookie('geocoderLocation', JSON.stringify(c))
+            .then(function () {
+                redirectWithLocation();
+                document.body.dataset.geocoded = true;
+            }).catch(function (error) {
             console.log(error);
         });
-    }
-
+    }).catch(function (error) {
+        console.log(error);
+    });
 });
 
 function getPosition(options) {
@@ -91,6 +79,7 @@ function setCookie(name, value) {
     });
 }
 
+// Ignore this
 function getCookie(name) {
     return new Promise(function (resolve) {
         var value = document.cookie.split('; ').reduce(function (r, v) {
@@ -115,181 +104,3 @@ function setUpObserver() {
         attributes: true
     });
 }
-
-function initiateMap() {
-    getCookie('geocoderLocation').then(function (value) {
-        console.log('cookie read');
-        var coords = JSON.parse(value);
-        map = GMaps({
-            div: '#map',
-            zoom: 12,
-            lat: coords.latitude,
-            lng: coords.longitude
-        });
-        map.addStyle({
-            styles: style,
-            mapTypeId: 'custom-style'
-        });
-        map.setStyle('custom-style');
-        //addMarkers();
-        //addCenterMarker();
-    })
-}
-
-
-function addCenterMarker() {
-    map.addMarker({
-        lat: map.getCenter().lat(),
-        lng: map.getCenter().lng(),
-        title: 'Your location',
-        infoWindow: {
-            content: '<h4>You are here</h4>'
-        },
-        icon: {
-            scaledSize: new google.maps.Size(30, 30),
-            url: 'https://furtaev.ru/preview/man.png'
-        }
-    });
-}
-
-function addMarkers() {
-    restaurants.forEach(function (item) {
-        map.addMarker({
-            lat: item.latitude,
-            lng: item.longitude,
-            title: item.name,
-            infoWindow: {
-                content: '<h4>' + item.name + '</h4><p>' + item.city + '</p>'
-            },
-            icon: {
-                scaledSize: new google.maps.Size(30, 30),
-                url: 'https://furtaev.ru/preview/eat_at_home.png'
-            }
-        });
-    });
-}
-
-
-var style = [{
-    "elementType": "geometry",
-    "stylers": [{
-        "color": "#f5f5f5"
-    }]
-},
-    {
-        "elementType": "labels.icon",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    },
-    {
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#616161"
-        }]
-    },
-    {
-        "elementType": "labels.text.stroke",
-        "stylers": [{
-            "color": "#f5f5f5"
-        }]
-    },
-    {
-        "featureType": "administrative.land_parcel",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#bdbdbd"
-        }]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#eeeeee"
-        }]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#757575"
-        }]
-    },
-    {
-        "featureType": "poi.park",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#e5e5e5"
-        }]
-    },
-    {
-        "featureType": "poi.park",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#9e9e9e"
-        }]
-    },
-    {
-        "featureType": "road",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#ffffff"
-        }]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#757575"
-        }]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#dadada"
-        }]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#616161"
-        }]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#9e9e9e"
-        }]
-    },
-    {
-        "featureType": "transit.line",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#e5e5e5"
-        }]
-    },
-    {
-        "featureType": "transit.station",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#eeeeee"
-        }]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [{
-            "color": "#c9c9c9"
-        }]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#9e9e9e"
-        }]
-    }
-]

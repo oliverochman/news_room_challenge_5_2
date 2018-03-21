@@ -5,8 +5,6 @@ class User < ApplicationRecord
   reverse_geocoded_by :latitude, :longitude
   enum role: [:visitor, :author]
 
-  #validates_inclusion_of :role, inclusion: { in: role.keys }
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
