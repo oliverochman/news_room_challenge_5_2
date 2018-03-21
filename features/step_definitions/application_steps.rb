@@ -26,3 +26,12 @@ Given(/^I am logged in as "([^"]*)"$/) do |email|
   user = User.find_by(email: email)
   login_as(user, scope: :user)
 end
+
+And(/^I visit the site$/) do
+  visit root_path
+end
+
+Given(/^I am at latitude: "([^"]*)", longitude: "([^"]*)"$/) do |lat, lng|
+  Rails.application.config.fake_location = { latitude: lat, longitude: lng }
+end
+

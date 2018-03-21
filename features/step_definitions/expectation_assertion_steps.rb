@@ -10,3 +10,11 @@ end
 And(/^I should see "([^"]*)"$/) do |expected_content|
   expect(page).to have_content expected_content
 end
+
+Then(/^the center of the map should be approximately "([^"]*)" lat and "([^"]*)" lng$/) do |lat, lng|
+  ACCEPTED_OFFSET = 0.2
+  center_lat = page.evaluate_script('map.getCenter().lat();')
+  center_lng = page.evaluate_script('map.getCenter().lng();')
+  expect(center_lat).to be_within(ACCEPTED_OFFSET).of(lat.to_f)
+  expect(center_lng).to be_within(ACCEPTED_OFFSET).of(lng.to_f)
+end

@@ -12,6 +12,7 @@ gem 'turbolinks', '~> 5'
 gem 'haml-rails'
 gem 'devise'
 gem 'pundit'
+gem 'geocoder'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
@@ -26,6 +27,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
   gem 'pundit-matchers'
+  gem 'launchy'
 end
 
 group :development do
