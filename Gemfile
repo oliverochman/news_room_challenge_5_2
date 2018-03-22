@@ -13,6 +13,9 @@ gem 'haml-rails'
 gem 'devise'
 gem 'pundit'
 gem 'geocoder'
+gem 'devise_token_auth'
+gem 'rack-cors', require: 'rack/cors'
+
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
@@ -36,4 +39,3 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
