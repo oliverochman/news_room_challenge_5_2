@@ -11,14 +11,17 @@ RSpec.describe 'Sessions', type: :request do
       }, headers: headers
 
       expected_response = {
-          'data' => {
-              'id' => user.id, 'email' => user.email,
-              'provider' => 'email', 'uid' => user.email, 'name' => nil,
-              'nickname' => nil, 'image' => nil, 'type' => 'user'
+          'data' => {'id' => user.id,
+                     'email' => 'thomas@craftacademy.se',
+                     'provider' => 'email',
+                     'latitude' => nil,
+                     'longitude' => nil,
+                     'uid' => 'thomas@craftacademy.se',
+                     'role' => 'visitor',
+                     'address' => nil
           }
       }
-
-      expect(response_json).to eq expected_response
+      expect(JSON.parse(response.body)).to eq expected_response
     end
 
     it 'invalid password returns error message' do
@@ -26,7 +29,7 @@ RSpec.describe 'Sessions', type: :request do
           email: user.email, password: 'wrong_password'
       }, headers: headers
 
-      expect(response_json['errors'])
+      expect(JSON.parse(response.body)['errors'])
           .to eq ['Invalid login credentials. Please try again.']
       expect(response.status).to eq 401
     end
@@ -36,7 +39,7 @@ RSpec.describe 'Sessions', type: :request do
           email: 'wrong@email.com', password: user.password
       }, headers: headers
 
-      expect(response_json['errors'])
+      expect(JSON.parse(response.body)['errors'])
           .to eq ['Invalid login credentials. Please try again.']
       expect(response.status).to eq 401
     end
@@ -57,7 +60,7 @@ RSpec.describe 'Sessions', type: :request do
 
     it 'logs out a logged in user' do
       delete '/api/auth/sign_out', headers: @headers
-      expect(response_json['success']).to eq true
+      expect(JSON.parse(response.body)['success']).to eq true
     end
   end
 end
