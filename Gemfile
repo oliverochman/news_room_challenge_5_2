@@ -15,6 +15,7 @@ gem 'pundit'
 gem 'geocoder'
 gem 'devise_token_auth'
 gem 'rack-cors', require: 'rack/cors'
+gem 'omniauth-facebook'
 
 
 gem 'bootsnap', '>= 1.1.0', require: false

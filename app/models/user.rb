@@ -6,7 +6,8 @@ class User < ApplicationRecord
   enum role: [:visitor, :author]
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, :omniauth_providers => [:facebook]
 
   include DeviseTokenAuth::Concerns::User
 
