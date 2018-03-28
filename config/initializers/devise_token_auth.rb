@@ -1,3 +1,3 @@
 DeviseTokenAuth.setup do |config|
-  # config.enable_standard_devise_support = false
+  config.omniauth_prefix = '/omniauth'
 end

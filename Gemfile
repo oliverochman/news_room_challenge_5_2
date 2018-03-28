@@ -32,6 +32,7 @@ group :development, :test do
   gem 'chromedriver-helper'
   gem 'pundit-matchers'
   gem 'launchy'
+  gem 'webmock'
 end
 
 group :development do

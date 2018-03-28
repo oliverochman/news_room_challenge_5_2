@@ -56,7 +56,7 @@ RSpec.describe 'User Registration', type: :request do
 
       let(:params) { {omniauth_window_type: 'newWindow'} }
       let(:request) { lambda do
-        get('/api/v1/auth/facebook/',
+        get('/api/auth/facebook/',
             params: params,
             headers: headers)
         follow_redirect! until response.status == 200
