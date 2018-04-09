@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   root controller: :articles, action: :index
 
   namespace :api, defaults: { format: :json } do
-    mount_devise_token_auth_for 'User', at: 'auth'
+    mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+      omniauth_callbacks: 'api/omniauth_callbacks'
+    }
   end
 end
