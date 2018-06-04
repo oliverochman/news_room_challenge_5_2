@@ -75,12 +75,10 @@ RSpec.describe 'User Registration', type: :request do
 
       it 'allows user to register with valid authorization' do
         # Uses default mock, set in support/oauth.rb
-        binding.pry
         expect { request.call }.to change(User, :count).by(1)
       end
 
       it 'fails to register user with invalid authorization' do
-        #binding.pry
         OmniAuth.config.mock_auth[:facebook] = :invalid_credentials
         expect { bad_request.call }.to change(User, :count).by(0)
       end
