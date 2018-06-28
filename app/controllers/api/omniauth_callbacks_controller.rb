@@ -4,7 +4,7 @@ class Api::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksContr
     get_resource_from_auth_hash
     set_token_on_resource
     create_auth_params
-    sign_in(:user, @resource, store: false, bypass: false)
+    sign_in(:user, @resource, store: false, bypass: true)
 
     @resource.save!
 
